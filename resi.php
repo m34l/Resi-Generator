@@ -11,11 +11,11 @@ $count = trim(fgets(STDIN));
 $i = 0;
 $j = 0;
 
-$getcookies = Curi('https://www.dhl.com/en/express/tracking.html', false, false, false, false, true);
+$getcookies = Curi('https://www.dhl.com/en/express/tracking.html?AWB=9613888281&brand=DHL', false, false, false, false, true);
 preg_match_all('%set-cookie: (.*?);%', $getcookies[0], $d);$cookies = '';
 for($o = 0; $o < count($d[0]); $o++)$cookies.= $d[1][$o].";";
 
-echo "MADE BY M34L@Ismail Muhammad Zeindy".PHP_EOL;
+
 if (!empty($count)) {
 
     while(true){
