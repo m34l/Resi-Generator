@@ -5,10 +5,10 @@
  * Special Thanks To : Setya Mickala as SHARE AIRDROP
  */
 awal:
+echo "MADE BY M34L@ISMAILMUHAMMADZEINDY".PHP_EOL." Pake resi2.php kalo mau cookies lebih lama dipake, ganti manual";
+
 echo "Berapa Banyak? ";
 $count = trim(fgets(STDIN));
-
-echo "MADE BY M34L@ISMAILMUHAMMADZEINDY".PHP_EOL." Pake resi2.php kalo mau cookies lebih lama dipake, ganti manual";
 
 $i = 0;
 $j = 0;
