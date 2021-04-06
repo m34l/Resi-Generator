@@ -15,6 +15,7 @@ $getcookies = Curi('https://www.dhl.com/en/express/tracking.html?AWB=9613888281&
 preg_match_all('%set-cookie: (.*?);%', $getcookies[0], $d);$cookies = '';
 for($o = 0; $o < count($d[0]); $o++)$cookies.= $d[1][$o].";";
 
+echo "MADE BY M34L@ISMAILMUHAMMADZEINDY".PHP_EOL." Pake resi2.php kalo mau cookies lebih lama dipake, ganti manual";
 
 if (!empty($count)) {
 
