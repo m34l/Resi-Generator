@@ -11,11 +11,16 @@ $count = trim(fgets(STDIN));
 $i = 0;
 $j = 0;
 
+$getcookies = Curi('https://www.dhl.com/en/express/tracking.html', false, false, false, false, true);
+preg_match_all('%set-cookie: (.*?);%', $getcookies[0], $d);$cookies = '';
+for($o = 0; $o < count($d[0]); $o++)$cookies.= $d[1][$o].";";
+
+
 if (!empty($count)) {
 
     while(true){
         $randomAWB = rand(1000000000,9999999999);
-        $check = dhl($randomAWB);
+        $check = dhl($randomAWB,$cookies);
         $json_check = json_decode($check,true);
         //print_r($json_check);
 
@@ -55,7 +60,7 @@ if (!empty($count)) {
 
 
 
-function dhl($awb){
+function dhl($awb,$cookies){
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, 'https://www.dhl.com/shipmentTracking?AWB='.$awb.'&countryCode=g0&languageCode=en&_=1617645656661');
@@ -75,7 +80,7 @@ function dhl($awb){
     $headers[] = 'Sec-Fetch-Dest: empty';
     $headers[] = 'Referer: https://www.dhl.com/en/express/tracking.html?AWB=3874133863&brand=DHL';
     $headers[] = 'Accept-Language: id,en-US;q=0.9,en;q=0.8,und;q=0.7';
-    $headers[] = 'Cookie: AWBS=3874133863; BRAND=Express%20Services; ak_bmsc=03F783297B4788165B8402F8F142741817DD32A4F72B0000BBE46C60043F9046~plJ9RQdRSWmBjKdsdJsHlM+qZwfUMcoohZs1GSm4hkvuCngEOeesQ9FEPapDqGJKms0TQa5SDEGumafBZmYPt3vqIKyjP3a87nAXkTzTVvkoDWvBvax9zKlvPellriRuRsy69kTxImoXGU0eUAltG4Sn38pd29w0AmNVGu4hcxeFQ0c8Hmq0gkRUB6t6EJh5MwhVT5iOTVIci/HN5YEEyKbDK+WJh5M0Os306/V5L46BY=; bm_sz=34AA4B9E148E597788CBF69DC7335045~YAAQpDLdF/J89XJ4AQAAnnxdqQthEM9in9Z4oe9yMFAcLP0jvuCQ5wjWfH0lL4tr5jomyu9cOikTgpUe0B6zuAa7U2EYY3jlJDizMjiSilYNSp6Oe/7Nd0kGkE0UPn631rKZL56X4CjSsr7G/jTsx3MI3jtDtt0pvPRaNssnUGMnU/0ozzarGMdz3QBl15qo/flOyKoIsq0oQ3InuAP1twyStP89gqd83v20bs3y1GA1NEztRlClOlfmlFP7OaZKL03FoJ5GmM6HIlCMHVcBqW2da3ygOijKpvbd; dhl_cookie_consent=shown; bm_sv=E1B7822C24533E6E933072F8D6E73133~ews+sqcrtYcqC/oyt5b9oDbXiPjXPIVS/AVI54G58GqcQIupb4U7UB9z7Yjzl5UkBZ2HjtKN5ZiGqmX5xc+oqI+ikbzmOmowjfPQAWKTsx4y57o8i4STiAgTPTv0Khl4JNUXe5ii0kar6X1Im8WX2w==; _abck=858FA80BD4F81E4E26077CBFAE255907~-1~YAAQpDLdF2d+9XJ4AQAA19BdqQWqeJlsTmf0H9i+zl1hqSRktZRDa6wdf+B7HdPRuvXa3RSRa/Wf1Lrud7JM+hNDb4nEZ66Y3t5K1GIsmacT+PQoMxNTutmHe0rHPfNX6ZdLjnE7ZuR4GYKO0yh4uCvfcgWWancBhGnkmo/uPXPJK/8XYF9OqQBCDAQg2BoWkF8kobbgD9KvgEfUbgRrO7ys4H/98psJVURKItT6mxuTN8Q3jOhTuPODOjpW75TcEvjO+Or5KXVWaDHvfQyJxykenSONFxibsfsbe1MG4+Q0we7ngcfz7wRbyhFvI1V4EPzOYvg9oGIMZZ7vjpU8C6fTO4fT00S5cPUVLKDw9pbLYlbsqnaU8s2T/9YToYTSlM2FNFk2GYgfqmgn0QoyJ5ru4pGas12sP+3siQf0~-1~-1~-1; RT="z=1&dm=www.dhl.com&si=5b0cb51b-a547-4312-9487-a8b5a0aa57d7&ss=kn6luyfh&sl=7&tt=kh&obo=6&rl=1&ld=a19d&r=40b5rslx&ul=a19f"'; //PASTE DISINI
+    $headers[] = 'Cookie: '.$cookies; 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     
 
@@ -87,6 +92,54 @@ function dhl($awb){
     curl_close($ch);
     
     return $result;
+}
+
+function Curi($url, $fields=false, $cookie=false, $httpheader=false, $proxy=false, $encoding=false, $timeout=false, $useragent=false)
+{ 
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
+    if($useragent !== false)
+    {
+        curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
+    }
+    if($fields !== false)
+    { 
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+    }
+    if($encoding !== false)
+    { 
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+    }
+    if($cookie !== false)
+    { 
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);
+    }
+    if($httpheader !== false)
+    { 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $httpheader);
+    }
+    if($proxy !== false)
+    { 
+        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+    }
+    if($timeout !== false)
+    { 
+      // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0); 
+      // curl_setopt($ch, CURLOPT_TIMEOUT, 6); //timeout in seconds     
+    }
+    $response = curl_exec($ch);
+    $header = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+    $body = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+    $code=curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return array($header, $body, $code);
 }
 
 ?>
