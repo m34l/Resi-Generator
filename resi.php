@@ -5,7 +5,7 @@
  * Special Thanks To : Setya Mickala as SHARE AIRDROP
  */
 awal:
-echo "Mau Berapa Resi Valid? ";
+echo "Berapa Banyak? ";
 $count = trim(fgets(STDIN));
 
 $i = 0;
@@ -22,7 +22,7 @@ if (!empty($count)) {
         foreach ($json_check as $key => $code){
             if ($key =="results") {
                 foreach ($code as $kode){
-                    if ($i > $count) {
+                    if ($i >= $count) {
                         die("Done!");
                     } else {
                         $status = $kode['delivery']['status'];
