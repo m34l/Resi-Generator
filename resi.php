@@ -5,7 +5,7 @@
  * Special Thanks To : Setya Mickala as SHARE AIRDROP
  */
 awal:
-echo "Berapa Banyak? ";
+echo "Mau Berapa Resi Valid? ";
 $count = trim(fgets(STDIN));
 
 $i = 0;
