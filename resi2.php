@@ -16,7 +16,7 @@ if (!empty($count)) {
 
     while(true){
         $randomAWB = rand(1000000000,9999999999);
-        $check = dhl($randomAWB,$cookies);
+        $check = dhl($randomAWB);
         $json_check = json_decode($check,true);
         //print_r($json_check);
 
