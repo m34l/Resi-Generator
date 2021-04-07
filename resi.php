@@ -18,7 +18,8 @@ $j = 0;
 if (!empty($count)) {
 
     while(true){
-        $randomAWB = rand(1000000000,9999999999);
+        $randomAWB = ''.random(10,0).'';
+        
         $check = dhl($randomAWB);
         $json_check = json_decode($check,true);
         //print_r($json_check);
@@ -91,7 +92,21 @@ function dhl($awb){
     
     return $result;
 }
-
+function random($length,$a) 
+	{
+		$str = "";
+		if ($a == 0) {
+			$characters = array_merge(range('0','9'));
+		}elseif ($a == 1) {
+			$characters = array_merge(range('0','9'),range('a','z'));
+		}
+		$max = count($characters) - 1;
+		for ($i = 0; $i < $length; $i++) {
+			$rand = mt_rand(0, $max);
+			$str .= $characters[$rand];
+		}
+		return $str;
+	}
 
 
 ?>
