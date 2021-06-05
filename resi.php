@@ -2,11 +2,10 @@
 /**
  * CREATE : M34L@Ismail Muhammad Zeindy
  * GANTI TULISAN SEMOGA MATI MENDADAK LO AJG
- * Special Thanks To : Setya Mickala as SHARE AIRDROP
  */
 awal:
 echo "MADE BY M34L@ISMAILMUHAMMADZEINDY".PHP_EOL;
-echo "1. DHL ".PHP_EOL."2. Aliex".PHP_EOL."3. USPS".PHP_EOL.": ";
+echo "1. DHL ".PHP_EOL."2. Aliex".PHP_EOL."3. USPS".PHP_EOL."4. SHOPEE VN".PHP_EOL.": ";
 $choose = trim(fgets(STDIN));
 echo "Berapa Banyak? ";
 $count = trim(fgets(STDIN));
@@ -110,6 +109,40 @@ if (!empty($count)) {
             }
 
           
+        
+        } else if ($choose == '4') {
+            $randomAWB3 = 'VN0169'.random(8,0);
+            $check = Curi('https://spx.vn/api/v2/fleet_order/tracking/search?sls_tracking_number='.$randomAWB3);
+            $json_check = json_decode($check[1],true);
+            
+            
+            if ($json_check['message'] == 'Success') {
+                $status = $json_check['data']['tracking_list'][0]['status'];
+                $tgl = date('d-m-Y',$json_check['data']['tracking_list'][0]['timestamp']);
+                $msg = $json_check['data']['tracking_list'][0]['message'];  
+
+                    if ($i > $count) {
+                        die("Done!");
+                    } else {
+
+                        echo "\033[32m$i.  VALID | $randomAWB3 : $tgl  : $msg\033[0m\n";
+                        @ob_flush();
+                         flush();
+                        file_put_contents('resi.txt'," VALID | $randomAWB3 : $tgl  : $msg".PHP_EOL,FILE_APPEND);
+                        $i++;
+
+                    }
+
+            } else {
+                echo "\033[31m$j. $randomAWB3 : INVALID AWB\033[0m\n";
+                @ob_flush();
+                flush();
+                $j++;
+
+            }
+          
+            
+        
         } else {
             die("Pilih yang bener tolol");
         }
